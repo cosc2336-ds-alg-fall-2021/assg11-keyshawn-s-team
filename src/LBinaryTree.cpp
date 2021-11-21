@@ -299,6 +299,29 @@ Value LBinaryTree<Key, Value>::find(Key itemKey)
   BinaryTreeNode<Key, Value>* node = find(root, itemKey);
   return node->getValue();
 }
+/** @brief getMinimum (private)
+ * Private implementation of recursive getMinimum member function.  Recursively
+ * search binary tree to find left subtree.
+ *
+ * @param node The node we are currently processing/working on.  Can be
+ *   NULL, in which case we are at the location/point to create a new
+ *   node dynamically and return it for insertion in the tree.
+ * @returns BinaryTreeNode<T>* Returns a pointer to a left node.
+ */
+template<class Key, class Value>
+BinaryTreeNode<Key, Value>* LBinaryTree<Key, Value>::getMinimum(BinaryTreeNode<Key, Value>* node)
+{
+  // base case, when node is null
+  if (!node->hasLeft())
+  {
+    return node;
+  }
+  else
+  {
+    return getMinimum(node->getLeft());
+  }
+}
+
 /**
  * @brief Cause specific instance compilations
  *

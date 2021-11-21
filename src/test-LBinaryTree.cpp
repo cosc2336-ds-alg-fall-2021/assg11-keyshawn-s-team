@@ -164,199 +164,191 @@ TEST_CASE("LBinaryTreeNode<string, double> test tree construction <string,double
 
 /** Task 2: Test LBinaryTree find member function
  */
-   TEST_CASE("LBinaryTreeNode<int, int> test search with find member implementation",
-          "[task2]")
-   {
-   int keys[]   = {10, 5, 15, 12, 11, 3, 2, 1};
-   int values[] = {10, 5, 15, 12, 11, 3, 2, 1};
-   int size = 8;
-   LBinaryTree<int, int> tree(size, keys, values);
+TEST_CASE("LBinaryTreeNode<int, int> test search with find member implementation", "[task2]")
+{
+  int keys[] = {10, 5, 15, 12, 11, 3, 2, 1};
+  int values[] = {10, 5, 15, 12, 11, 3, 2, 1};
+  int size = 8;
+  LBinaryTree<int, int> tree(size, keys, values);
 
-   CHECK( tree.getSize() == 8 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1 2 3 5 10 11 12 15 ]" );
+  CHECK(tree.getSize() == 8);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1 2 3 5 10 11 12 15 ]");
 
-   // test find the root node
-   CHECK( tree.find(10) == 10 );
+  // test find the root node
+  CHECK(tree.find(10) == 10);
 
-   // test intermediate nodes, 15 and 5
-   CHECK( tree.find(15) == 15 );
-   CHECK( tree.find(5) == 5 );
+  // test intermediate nodes, 15 and 5
+  CHECK(tree.find(15) == 15);
+  CHECK(tree.find(5) == 5);
 
-   // test some leaf nodes
-   CHECK( tree.find(11) == 11 );
-   CHECK( tree.find(1) == 1 );
+  // test some leaf nodes
+  CHECK(tree.find(11) == 11);
+  CHECK(tree.find(1) == 1);
 
-   // test we get expected exception if try and find key not in the tree
-   CHECK_THROWS_AS( tree.find(42), BinaryTreeKeyNotFoundException );
-   }
+  // test we get expected exception if try and find key not in the tree
+  CHECK_THROWS_AS(tree.find(42), BinaryTreeKeyNotFoundException);
+}
 
 /** Task 2: Test LBinaryTree find member function
  */
-   TEST_CASE("LBinaryTreeNode<string, double> test search with find member implementation",
-          "[task2]")
-   {
-   // test array based constructor, keys inserted in order from index 0 up to max,
-   // so 10 becomes the root of this tree
-   string keys[]   = {"juliet", "echo", "oscar", "lima", "kilo", "charlie", "bravo", "alpha"};
-   double values[] = {10.10, 5.5, 15.15, 12.12, 11.11, 3.3, 2.2, 1.1};
-   int size = 8;
-   LBinaryTree<string, double> tree(size, keys, values);
+TEST_CASE("LBinaryTreeNode<string, double> test search with find member implementation", "[task2]")
+{
+  // test array based constructor, keys inserted in order from index 0 up to max,
+  // so 10 becomes the root of this tree
+  string keys[] = {"juliet", "echo", "oscar", "lima", "kilo", "charlie", "bravo", "alpha"};
+  double values[] = {10.10, 5.5, 15.15, 12.12, 11.11, 3.3, 2.2, 1.1};
+  int size = 8;
+  LBinaryTree<string, double> tree(size, keys, values);
 
-   CHECK( tree.getSize() == 8 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1.1 2.2 3.3 5.5 10.1 11.11 12.12 15.15 ]" );
+  CHECK(tree.getSize() == 8);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1.1 2.2 3.3 5.5 10.1 11.11 12.12 15.15 ]");
 
-   // test find the root node
-   CHECK( tree.find("juliet") == Approx(10.1) );
+  // test find the root node
+  CHECK(tree.find("juliet") == Approx(10.1));
 
-   // test intermediate nodes, 15 and 5
-   CHECK( tree.find("oscar") == Approx(15.15) );
-   CHECK( tree.find("echo") == Approx(5.5) );
+  // test intermediate nodes, 15 and 5
+  CHECK(tree.find("oscar") == Approx(15.15));
+  CHECK(tree.find("echo") == Approx(5.5));
 
-   // test some leaf nodes
-   CHECK( tree.find("kilo") == Approx(11.11) );
-   CHECK( tree.find("alpha") == Approx(1.1) );
+  // test some leaf nodes
+  CHECK(tree.find("kilo") == Approx(11.11));
+  CHECK(tree.find("alpha") == Approx(1.1));
 
-   // test we get expected exception if try and find key not in the tree
-   CHECK_THROWS_AS( tree.find("thanks-for-the-fish"), BinaryTreeKeyNotFoundException );
-   }
- 
-/** Task 3: Test private LBinaryTree getMinimum member function
- */
-/*
-   TEST_CASE("LBinaryTreeNode<int, int> test private getMinimum member implementation",
-          "[task3]")
-   {
-   int keys[]   = {10, 5, 15, 12, 11, 3, 2, 1, 8, 9, 18, 16, 20};
-   int values[] = {10, 5, 15, 12, 11, 3, 2, 1, 8, 9, 18, 16, 20};
-   int size = 13;
-   LBinaryTree<int, int> tree(size, keys, values);
-
-   CHECK( tree.getSize() == 13 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1 2 3 5 8 9 10 11 12 15 16 18 20 ]" );
-
-   // pointers for our tests
-   BinaryTreeNode<int, int>* subtree;
-   BinaryTreeNode<int, int>* node;
-
-   // minimum of a leaf node should just return itself
-   // 1 is a leaf node
-   subtree = tree.root->left->left->left->left;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == 1 );
-   CHECK( node->getValue() == 1 );
-
-   // 11 is a leaf node
-   subtree = tree.root->right->left->left;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == 11 );
-   CHECK( node->getValue() == 11 );
-
-   // 20 is a leaf node
-   subtree = tree.root->right->right->right;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == 20 );
-   CHECK( node->getValue() == 20 );
-
-   // minimum of node with only right subtree should return itself
-   // 8 has only a right subtree
-   subtree = tree.root->left->right;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == 8 );
-   CHECK( node->getValue() == 8 );
-
-   // minimum of node with only left subtree should return the minimum
-   // value in the left subtree.
-   // 3 has only a left subtree
-   subtree = tree.root->left->left;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == 1 );
-   CHECK( node->getValue() == 1 );
-
-   // minimum of node with bothy left and right children should return minimum
-   // in left subtree
-   // 15 has left and right children
-   subtree = tree.root->right;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == 11 );
-   CHECK( node->getValue() == 11 );
-
-   // minimum from root is value 1
-   node = tree.getMinimum(tree.root);
-   CHECK( node->getKey() == 1 );
-   CHECK( node->getValue() == 1 );
-   }
- */
+  // test we get expected exception if try and find key not in the tree
+  CHECK_THROWS_AS(tree.find("thanks-for-the-fish"), BinaryTreeKeyNotFoundException);
+}
 
 /** Task 3: Test private LBinaryTree getMinimum member function
  */
-/*
-   TEST_CASE("LBinaryTreeNode<string, double> test private getMinimum member implementation",
-          "[task3]")
-   {
-   string keys[]   = {"juliet", "echo", "oscar", "lima", "kilo", "charlie", "bravo", "alpha", "hotel", "india", "romeo", "papa", "tango"};
-   double values[] = {10.10, 5.5, 15.15, 12.12, 11.11, 3.3, 2.2, 1.1, 8.8, 9.9, 18.18, 16.16, 20.20};
-   int size = 13;
-   LBinaryTree<string, double> tree(size, keys, values);
+TEST_CASE("LBinaryTreeNode<int, int> test private getMinimum member implementation", "[task3]")
+{
+  int keys[] = {10, 5, 15, 12, 11, 3, 2, 1, 8, 9, 18, 16, 20};
+  int values[] = {10, 5, 15, 12, 11, 3, 2, 1, 8, 9, 18, 16, 20};
+  int size = 13;
+  LBinaryTree<int, int> tree(size, keys, values);
 
-   CHECK( tree.getSize() == 13 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1.1 2.2 3.3 5.5 8.8 9.9 10.1 11.11 12.12 15.15 16.16 18.18 20.2 ]" );
+  CHECK(tree.getSize() == 13);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1 2 3 5 8 9 10 11 12 15 16 18 20 ]");
 
-   // pointers for our tests
-   BinaryTreeNode<string, double>* subtree;
-   BinaryTreeNode<string, double>* node;
+  // pointers for our tests
+  BinaryTreeNode<int, int>* subtree;
+  BinaryTreeNode<int, int>* node;
 
-   // minimum of a leaf node should just return itself
-   // 1 "alpha" is a leaf node
-   subtree = tree.root->left->left->left->left;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == "alpha" );
-   CHECK( node->getValue() == Approx(1.1) );
+  // minimum of a leaf node should just return itself
+  // 1 is a leaf node
+  subtree = tree.root->left->left->left->left;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == 1);
+  CHECK(node->getValue() == 1);
 
-   // 11 "kilo" is a leaf node
-   subtree = tree.root->right->left->left;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == "kilo" );
-   CHECK( node->getValue() == Approx(11.11) );
+  // 11 is a leaf node
+  subtree = tree.root->right->left->left;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == 11);
+  CHECK(node->getValue() == 11);
 
-   // 20 "tango" is a leaf node
-   subtree = tree.root->right->right->right;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == "tango" );
-   CHECK( node->getValue() == Approx(20.20) );
+  // 20 is a leaf node
+  subtree = tree.root->right->right->right;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == 20);
+  CHECK(node->getValue() == 20);
 
-   // minimum of node with only right subtree should return itself
-   // 8 "hotel" has only a right subtree
-   subtree = tree.root->left->right;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == "hotel" );
-   CHECK( node->getValue() == Approx(8.8) );
+  // minimum of node with only right subtree should return itself
+  // 8 has only a right subtree
+  subtree = tree.root->left->right;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == 8);
+  CHECK(node->getValue() == 8);
 
-   // minimum of node with only left subtree should return the minimum
-   // value in the left subtree.
-   // 3 "charlie" has only a left subtree
-   subtree = tree.root->left->left;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == "alpha" );
-   CHECK( node->getValue() == Approx(1.1) );
+  // minimum of node with only left subtree should return the minimum
+  // value in the left subtree.
+  // 3 has only a left subtree
+  subtree = tree.root->left->left;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == 1);
+  CHECK(node->getValue() == 1);
 
-   // minimum of node with bothy left and right children should return minimum
-   // in left subtree
-   // 15 "oscar" has left and right children
-   subtree = tree.root->right;
-   node = tree.getMinimum(subtree);
-   CHECK( node->getKey() == "kilo" );
-   CHECK( node->getValue() == Approx(11.11) );
+  // minimum of node with bothy left and right children should return minimum
+  // in left subtree
+  // 15 has left and right children
+  subtree = tree.root->right;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == 11);
+  CHECK(node->getValue() == 11);
 
-   // minimum from root is value 1
-   node = tree.getMinimum(tree.root);
-   CHECK( node->getKey() == "alpha" );
-   CHECK( node->getValue() == Approx(1.1) );
-   }
+  // minimum from root is value 1
+  node = tree.getMinimum(tree.root);
+  CHECK(node->getKey() == 1);
+  CHECK(node->getValue() == 1);
+}
+
+/** Task 3: Test private LBinaryTree getMinimum member function
  */
+TEST_CASE("LBinaryTreeNode<string, double> test private getMinimum member implementation", "[task3]")
+{
+  string keys[] = {"juliet", "echo", "oscar", "lima", "kilo", "charlie", "bravo", "alpha", "hotel", "india", "romeo", "papa", "tango"};
+  double values[] = {10.10, 5.5, 15.15, 12.12, 11.11, 3.3, 2.2, 1.1, 8.8, 9.9, 18.18, 16.16, 20.20};
+  int size = 13;
+  LBinaryTree<string, double> tree(size, keys, values);
+
+  CHECK(tree.getSize() == 13);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1.1 2.2 3.3 5.5 8.8 9.9 10.1 11.11 12.12 15.15 16.16 18.18 20.2 ]");
+
+  // pointers for our tests
+  BinaryTreeNode<string, double>* subtree;
+  BinaryTreeNode<string, double>* node;
+
+  // minimum of a leaf node should just return itself
+  // 1 "alpha" is a leaf node
+  subtree = tree.root->left->left->left->left;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == "alpha");
+  CHECK(node->getValue() == Approx(1.1));
+
+  // 11 "kilo" is a leaf node
+  subtree = tree.root->right->left->left;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == "kilo");
+  CHECK(node->getValue() == Approx(11.11));
+
+  // 20 "tango" is a leaf node
+  subtree = tree.root->right->right->right;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == "tango");
+  CHECK(node->getValue() == Approx(20.20));
+
+  // minimum of node with only right subtree should return itself
+  // 8 "hotel" has only a right subtree
+  subtree = tree.root->left->right;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == "hotel");
+  CHECK(node->getValue() == Approx(8.8));
+
+  // minimum of node with only left subtree should return the minimum
+  // value in the left subtree.
+  // 3 "charlie" has only a left subtree
+  subtree = tree.root->left->left;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == "alpha");
+  CHECK(node->getValue() == Approx(1.1));
+
+  // minimum of node with bothy left and right children should return minimum
+  // in left subtree
+  // 15 "oscar" has left and right children
+  subtree = tree.root->right;
+  node = tree.getMinimum(subtree);
+  CHECK(node->getKey() == "kilo");
+  CHECK(node->getValue() == Approx(11.11));
+
+  // minimum from root is value 1
+  node = tree.getMinimum(tree.root);
+  CHECK(node->getKey() == "alpha");
+  CHECK(node->getValue() == Approx(1.1));
+}
 
 /** Task 4: Test private LBinaryTree deleteMinimum member function
  */
