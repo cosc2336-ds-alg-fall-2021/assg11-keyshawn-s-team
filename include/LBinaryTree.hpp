@@ -53,6 +53,8 @@ public:
 
   // adding, accessing and removing values from the binarytree
   void clear();
+  void insert(Key itemKey, Value itemValue);
+  Value find(Key itemValue);
 
 private:
   /// @brief The root of this binary tree.  When tree is empty then
@@ -65,6 +67,10 @@ private:
   // node to perform the operation.
   string str(BinaryTreeNode<Key, Value>* node) const;
   void clear(BinaryTreeNode<Key, Value>* node);
+  BinaryTreeNode<Key, Value>* find(BinaryTreeNode<Key, Value>* node, Key itemKey);
+  BinaryTreeNode<Key, Value>* insert(BinaryTreeNode<Key, Value>* node, Key itemKey, Value itemValue);
+  BinaryTreeNode<Key, Value>* getMinimum(BinaryTreeNode<Key, Value>* node);
+  BinaryTreeNode<Key, Value>* deleteMinimum(BinaryTreeNode<Key, Value>* node);
 };
 
 #endif // define _LBINARYTREE_HPP_
