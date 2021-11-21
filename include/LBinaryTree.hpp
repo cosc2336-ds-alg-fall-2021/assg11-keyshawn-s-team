@@ -70,6 +70,7 @@ private:
   BinaryTreeNode<Key, Value>* find(BinaryTreeNode<Key, Value>* node, Key itemKey);
   BinaryTreeNode<Key, Value>* insert(BinaryTreeNode<Key, Value>* node, Key itemKey, Value itemValue);
   BinaryTreeNode<Key, Value>* getMinimum(BinaryTreeNode<Key, Value>* node);
+  BinaryTreeNode<Key, Value>* deleteMinimum(BinaryTreeNode<Key, Value>* node);
 };
 
 #endif // define _LBINARYTREE_HPP_

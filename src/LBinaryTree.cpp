@@ -303,9 +303,7 @@ Value LBinaryTree<Key, Value>::find(Key itemKey)
  * Private implementation of recursive getMinimum member function.  Recursively
  * search binary tree to find left subtree.
  *
- * @param node The node we are currently processing/working on.  Can be
- *   NULL, in which case we are at the location/point to create a new
- *   node dynamically and return it for insertion in the tree.
+ * @param node The node we are currently processing/working on.
  * @returns BinaryTreeNode<T>* Returns a pointer to a left node.
  */
 template<class Key, class Value>
@@ -322,6 +320,27 @@ BinaryTreeNode<Key, Value>* LBinaryTree<Key, Value>::getMinimum(BinaryTreeNode<K
   }
 }
 
+/** @brief deleteMinimum (private)
+ * Private implementation of recursive deleteMinimum member function.  Recursively
+ * search binary tree to remove left subtree.
+ *
+ * @param node The node we are currently processing/working on.
+ * @returns BinaryTreeNode<T>* Returns a pointer to right node.
+ */
+template<class Key, class Value>
+BinaryTreeNode<Key, Value>* LBinaryTree<Key, Value>::deleteMinimum(BinaryTreeNode<Key, Value>* node)
+{
+  // base case, when node is null
+  if (!node->hasLeft())
+  {
+    return node->getRight();
+  }
+  else
+  {
+    node->setLeft(deleteMinimum(node->getLeft()));
+  }
+  return node;
+}
 /**
  * @brief Cause specific instance compilations
  *

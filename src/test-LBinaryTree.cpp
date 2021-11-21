@@ -352,203 +352,195 @@ TEST_CASE("LBinaryTreeNode<string, double> test private getMinimum member implem
 
 /** Task 4: Test private LBinaryTree deleteMinimum member function
  */
-/*
-   TEST_CASE("LBinaryTreeNode<int, int> test private deleteMinimum member implementation",
-          "[task4]")
-   {
-   int keys[]   = {10, 5, 15, 12, 11, 3, 2, 1, 8, 9, 18, 16, 20};
-   int values[] = {10, 5, 15, 12, 11, 3, 2, 1, 8, 9, 18, 16, 20};
-   int size = 13;
-   LBinaryTree<int, int> tree(size, keys, values);
+TEST_CASE("LBinaryTreeNode<int, int> test private deleteMinimum member implementation", "[task4]")
+{
+  int keys[] = {10, 5, 15, 12, 11, 3, 2, 1, 8, 9, 18, 16, 20};
+  int values[] = {10, 5, 15, 12, 11, 3, 2, 1, 8, 9, 18, 16, 20};
+  int size = 13;
+  LBinaryTree<int, int> tree(size, keys, values);
 
-   CHECK( tree.getSize() == 13 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1 2 3 5 8 9 10 11 12 15 16 18 20 ]" );
+  CHECK(tree.getSize() == 13);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1 2 3 5 8 9 10 11 12 15 16 18 20 ]");
 
-   // pointers for our tests
-   BinaryTreeNode<int, int>* subtree;
-   BinaryTreeNode<int, int>* node;
+  // pointers for our tests
+  BinaryTreeNode<int, int>* subtree;
+  BinaryTreeNode<int, int>* node;
 
-   // delete minimum of a node with a left child should just delete it
-   // 12 has only left child 11
-   subtree = tree.root->right->left;
-   node = tree.deleteMinimum(subtree);
-   // deleteMinimum cannot update size, it is a recursive function, but we
-   // can check the value was removed from the tree
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 1 2 3 5 8 9 10 12 15 16 18 20 ]" );
+  // delete minimum of a node with a left child should just delete it
+  // 12 has only left child 11
+  subtree = tree.root->right->left;
+  node = tree.deleteMinimum(subtree);
+  // deleteMinimum cannot update size, it is a recursive function, but we
+  // can check the value was removed from the tree
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1 2 3 5 8 9 10 12 15 16 18 20 ]");
 
+  // Another test of node with only a left subtree, though this node has a subtree, not
+  // just a single node.  3 has a left subtree with 2 and 1 in it
+  subtree = tree.root->left->left;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 2 3 5 8 9 10 12 15 16 18 20 ]");
 
-   // Another test of node with only a left subtree, though this node has a subtree, not
-   // just a single node.  3 has a left subtree with 2 and 1 in it
-   subtree = tree.root->left->left;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 2 3 5 8 9 10 12 15 16 18 20 ]" );
+  // 18 has left and right subtrees, should end up deleteing node 16
+  subtree = tree.root->right->right;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 2 3 5 8 9 10 12 15 18 20 ]");
 
-   // 18 has left and right subtrees, should end up deleteing node 16
-   subtree = tree.root->right->right;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 2 3 5 8 9 10 12 15 18 20 ]" );
+  // now 18 has only a right subtree, so it should end up returning itself for deletion.
+  // because of how deleteMin is supposed to work, this will only return the new
+  // minimum node, it will not actually change the tree
+  subtree = tree.root->right->right;
+  CHECK(subtree->getKey() == 18);
+  CHECK(subtree->getValue() == 18);
+  node = tree.deleteMinimum(subtree);
+  // did not update left node of the node 18 we started from
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 2 3 5 8 9 10 12 15 18 20 ]");
+  // but node 20 should be returned, which would cause this node 18 to be deleted if we called
+  // this on a parent tree of 18
+  CHECK(node->getKey() == 20);
+  CHECK(node->getValue() == 20);
 
-   // now 18 has only a right subtree, so it should end up returning itself for deletion.
-   // because of how deleteMin is supposed to work, this will only return the new
-   // minimum node, it will not actually change the tree
-   subtree = tree.root->right->right;
-   CHECK( subtree->getKey() == 18 );
-   CHECK( subtree->getValue() == 18 );
-   node = tree.deleteMinimum(subtree);
-   // did not update left node of the node 18 we started from
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 2 3 5 8 9 10 12 15 18 20 ]" );
-   // but node 20 should be returned, which would cause this node 18 to be deleted if we called
-   // this on a parent tree of 18
-   CHECK( node->getKey() == 20 );
-   CHECK( node->getValue() == 20 );
+  // test delete from root, 2 should be current minimum from root
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 3 5 8 9 10 12 15 18 20 ]");
 
-   // test delete from root, 2 should be current minimum from root
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 3 5 8 9 10 12 15 18 20 ]" );
+  // test delete from root again, 3 should be current minimum from root
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 5 8 9 10 12 15 18 20 ]");
 
-   // test delete from root again, 3 should be current minimum from root
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 5 8 9 10 12 15 18 20 ]" );
+  // 5 is minimum but it has right subtrees.  5 should be removed
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 8 9 10 12 15 18 20 ]");
 
-   // 5 is minimum but it has right subtrees.  5 should be removed
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 8 9 10 12 15 18 20 ]" );
+  // 15 has left and right subtrees, 12 is its left subtree which whould be removed
+  subtree = tree.root->right;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 8 9 10 15 18 20 ]");
 
-   // 15 has left and right subtrees, 12 is its left subtree which whould be removed
-   subtree = tree.root->right;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 8 9 10 15 18 20 ]" );
+  // now tree root has left and right subtrees, but again left subtree has a right
+  // subtree, but 8 should be removed if delete from root
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 9 10 15 18 20 ]");
 
-   // now tree root has left and right subtrees, but again left subtree has a right
-   // subtree, but 8 should be removed if delete from root
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 9 10 15 18 20 ]" );
+  // deleteing from root again leaves tree with no left subtree from root, only
+  // right
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 10 15 18 20 ]");
 
-   // deleteing from root again leaves tree with no left subtree from root, only
-   // right
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 10 15 18 20 ]" );
-
-   // 10 is the root of the tree, but no left subtree so 10 is the smallest.
-   // deleting from root should return the node with a value of 15 as the new
-   // node that would replace the root.  We will simulate what the
-   // remove() function would do with this here by replacing the root value
-   // with what is returned
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 10 15 18 20 ]" );
-   CHECK( node->getKey() == 15 );
-   CHECK( node->getValue() == 15);
-   tree.root = node;  // something like this should happen in the remove() function
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 15 18 20 ]" );
-   }
- */
+  // 10 is the root of the tree, but no left subtree so 10 is the smallest.
+  // deleting from root should return the node with a value of 15 as the new
+  // node that would replace the root.  We will simulate what the
+  // remove() function would do with this here by replacing the root value
+  // with what is returned
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 10 15 18 20 ]");
+  CHECK(node->getKey() == 15);
+  CHECK(node->getValue() == 15);
+  tree.root = node; // something like this should happen in the remove() function
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 15 18 20 ]");
+}
 
 /** Task 4: Test private LBinaryTree deleteMinimum member function
  */
-/*
-   TEST_CASE("LBinaryTreeNode<string, double> test private deleteMinimum member implementation",
-          "[task4]")
-   {
-   string keys[]   = {"juliet", "echo", "oscar", "lima", "kilo", "charlie", "bravo", "alpha", "hotel", "india", "romeo", "papa", "tango"};
-   double values[] = {10.10, 5.5, 15.15, 12.12, 11.11, 3.3, 2.2, 1.1, 8.8, 9.9, 18.18, 16.16, 20.20};
-   int size = 13;
-   LBinaryTree<string, double> tree(size, keys, values);
+TEST_CASE("LBinaryTreeNode<string, double> test private deleteMinimum member implementation", "[task4]")
+{
+  string keys[] = {"juliet", "echo", "oscar", "lima", "kilo", "charlie", "bravo", "alpha", "hotel", "india", "romeo", "papa", "tango"};
+  double values[] = {10.10, 5.5, 15.15, 12.12, 11.11, 3.3, 2.2, 1.1, 8.8, 9.9, 18.18, 16.16, 20.20};
+  int size = 13;
+  LBinaryTree<string, double> tree(size, keys, values);
 
-   CHECK( tree.getSize() == 13 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1.1 2.2 3.3 5.5 8.8 9.9 10.1 11.11 12.12 15.15 16.16 18.18 20.2 ]" );
+  CHECK(tree.getSize() == 13);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1.1 2.2 3.3 5.5 8.8 9.9 10.1 11.11 12.12 15.15 16.16 18.18 20.2 ]");
 
-   // pointers for our tests
-   BinaryTreeNode<string, double>* subtree;
-   BinaryTreeNode<string, double>* node;
+  // pointers for our tests
+  BinaryTreeNode<string, double>* subtree;
+  BinaryTreeNode<string, double>* node;
 
-   // delete minimum of a node with a left child should just delete it
-   // 12 "lima" has only left child 11 "kilo"
-   subtree = tree.root->right->left;
-   node = tree.deleteMinimum(subtree);
-   // deleteMinimum cannot update size, it is a recursive function, but we
-   // can check the value was removed from the tree
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 1.1 2.2 3.3 5.5 8.8 9.9 10.1 12.12 15.15 16.16 18.18 20.2 ]" );
+  // delete minimum of a node with a left child should just delete it
+  // 12 "lima" has only left child 11 "kilo"
+  subtree = tree.root->right->left;
+  node = tree.deleteMinimum(subtree);
+  // deleteMinimum cannot update size, it is a recursive function, but we
+  // can check the value was removed from the tree
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 1.1 2.2 3.3 5.5 8.8 9.9 10.1 12.12 15.15 16.16 18.18 20.2 ]");
 
+  // Another test of node with only a left subtree, though this node has a subtree, not
+  // just a single node.  3 "charlie" has a left subtree with 2 "bravo" and 1 "alpha" in it
+  subtree = tree.root->left->left;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 2.2 3.3 5.5 8.8 9.9 10.1 12.12 15.15 16.16 18.18 20.2 ]");
 
-   // Another test of node with only a left subtree, though this node has a subtree, not
-   // just a single node.  3 "charlie" has a left subtree with 2 "bravo" and 1 "alpha" in it
-   subtree = tree.root->left->left;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 2.2 3.3 5.5 8.8 9.9 10.1 12.12 15.15 16.16 18.18 20.2 ]" );
+  // 18 "romeo" has left and right subtrees, should end up deleteing node 16 "papa"
+  subtree = tree.root->right->right;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 2.2 3.3 5.5 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]");
 
-   // 18 "romeo" has left and right subtrees, should end up deleteing node 16 "papa"
-   subtree = tree.root->right->right;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 2.2 3.3 5.5 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]" );
+  // now 18 "romeo" has only a right subtree, so it should end up returning itself for deletion.
+  // because of how deleteMin is supposed to work, this will only return the new
+  // minimum node, it will not actually change the tree
+  subtree = tree.root->right->right;
+  CHECK(subtree->getKey() == "romeo");
+  CHECK(subtree->getValue() == Approx(18.18));
+  node = tree.deleteMinimum(subtree);
+  // did not update left node of the node 18 we started from
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 2.2 3.3 5.5 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]");
+  // but node 20 should be returned, which would cause this node 18 to be deleted if we called
+  // this on a parent tree of 18
+  CHECK(node->getKey() == "tango");
+  CHECK(node->getValue() == Approx(20.20));
 
-   // now 18 "romeo" has only a right subtree, so it should end up returning itself for deletion.
-   // because of how deleteMin is supposed to work, this will only return the new
-   // minimum node, it will not actually change the tree
-   subtree = tree.root->right->right;
-   CHECK( subtree->getKey() == "romeo" );
-   CHECK( subtree->getValue() == Approx(18.18) );
-   node = tree.deleteMinimum(subtree);
-   // did not update left node of the node 18 we started from
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 2.2 3.3 5.5 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]" );
-   // but node 20 should be returned, which would cause this node 18 to be deleted if we called
-   // this on a parent tree of 18
-   CHECK( node->getKey() == "tango" );
-   CHECK( node->getValue() == Approx(20.20) );
+  // test delete from root, 2 "bravo" should be current minimum from root
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 3.3 5.5 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]");
 
-   // test delete from root, 2 "bravo" should be current minimum from root
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 3.3 5.5 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]" );
+  // test delete from root again, 3 "charlie" should be current minimum from root
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 5.5 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]");
 
-   // test delete from root again, 3 "charlie" should be current minimum from root
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 5.5 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]" );
+  // 5 "echo" is minimum but it has right subtrees.  5 "echo" should be removed
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]");
 
-   // 5 "echo" is minimum but it has right subtrees.  5 "echo" should be removed
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 8.8 9.9 10.1 12.12 15.15 18.18 20.2 ]" );
+  // 15 "oscar" has left and right subtrees, 12 "lima" is its left subtree which whould be removed
+  subtree = tree.root->right;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 8.8 9.9 10.1 15.15 18.18 20.2 ]");
 
-   // 15 "oscar" has left and right subtrees, 12 "lima" is its left subtree which whould be removed
-   subtree = tree.root->right;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 8.8 9.9 10.1 15.15 18.18 20.2 ]" );
+  // now tree root has left and right subtrees, but again left subtree has a right
+  // subtree, but 8 "hotel" should be removed if delete from root
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 9.9 10.1 15.15 18.18 20.2 ]");
 
-   // now tree root has left and right subtrees, but again left subtree has a right
-   // subtree, but 8 "hotel" should be removed if delete from root
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 9.9 10.1 15.15 18.18 20.2 ]" );
+  // deleteing from root again leaves tree with no left subtree from root, only
+  // right
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 10.1 15.15 18.18 20.2 ]");
 
-   // deleteing from root again leaves tree with no left subtree from root, only
-   // right
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 10.1 15.15 18.18 20.2 ]" );
-
-   // 10 "juliet" is the root of the tree, but no left subtree so 10 "juliet" is the smallest.
-   // deleting from root should return the node with a value of 15 "oscar" as the new
-   // node that would replace the root.  We will simulate what the
-   // remove() function would do with this here by replacing the root value
-   // with what is returned
-   subtree = tree.root;
-   node = tree.deleteMinimum(subtree);
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 10.1 15.15 18.18 20.2 ]" );
-   CHECK( node->getKey() == "oscar" );
-   CHECK( node->getValue() == Approx(15.15) );
-   tree.root = node;  // something like this should happen in the remove() function
-   CHECK( tree.str() == "<BinaryTree> size: 13 values: [ 15.15 18.18 20.2 ]" );
-   }
- */
+  // 10 "juliet" is the root of the tree, but no left subtree so 10 "juliet" is the smallest.
+  // deleting from root should return the node with a value of 15 "oscar" as the new
+  // node that would replace the root.  We will simulate what the
+  // remove() function would do with this here by replacing the root value
+  // with what is returned
+  subtree = tree.root;
+  node = tree.deleteMinimum(subtree);
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 10.1 15.15 18.18 20.2 ]");
+  CHECK(node->getKey() == "oscar");
+  CHECK(node->getValue() == Approx(15.15));
+  tree.root = node; // something like this should happen in the remove() function
+  CHECK(tree.str() == "<BinaryTree> size: 13 values: [ 15.15 18.18 20.2 ]");
+}
 
 /** Task 5: Test LBinaryTree remove member function
  */
