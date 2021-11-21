@@ -240,7 +240,65 @@ void LBinaryTree<Key, Value>::insert(Key itemKey, Value itemValue)
 {
   root = insert(root, itemKey, itemValue);
 }
+/** @brief find (private)
+ * Private implementation of recursive tree search member function.  Recursively
+ * search binary tree to find key.
+ *
+ * @param node The node we are currently processing/working on.  Can be
+ *   NULL, in which case we are at the location/point to create a new
+ *   node dynamically and return it for insertion in the tree.
+ * @param itemKey The key to be searched into the tree.
+ *
+ * @returns BinaryTreeNode<T>* Returns a pointer to a node.
+ */
+template<class Key, class Value>
+BinaryTreeNode<Key, Value>* LBinaryTree<Key, Value>::find(BinaryTreeNode<Key, Value>* node, Key itemKey)
+{
+  // base case, when node is null
+  if (node == nullptr)
+  {
+    ostringstream out;
+    out << "Error: <LBinaryTree>::find() failed to find key " << itemKey << " from tree, size:  " << this->size;
 
+    throw BinaryTreeKeyNotFoundException(out.str());
+  }
+  else if (node->getKey() == itemKey)
+    return node;
+  else
+  {
+    // check the general cases here, determine if we
+    // should go left or right in the tree
+    if (itemKey < node->getKey() && node->hasLeft())
+    {
+      return find(node->getLeft(), itemKey);
+    }
+    // otherwise go right to find
+    else
+    {
+      if (node->hasRight())
+        return find(node->getRight(), itemKey);
+      else
+      {
+        ostringstream out;
+        out << "Error: <LBinaryTree>::find() failed to find key " << itemKey << " from tree, size:  " << this->size;
+
+        throw BinaryTreeKeyNotFoundException(out.str());
+      }
+    }
+  }
+}
+
+/**  @brief find (public)
+ * The public member function to search an item key into the binary search tree.
+ * We simply call the recursive private function to do the actual
+ * work of the search, starting with our current root node.
+ */
+template<class Key, class Value>
+Value LBinaryTree<Key, Value>::find(Key itemKey)
+{
+  BinaryTreeNode<Key, Value>* node = find(root, itemKey);
+  return node->getValue();
+}
 /**
  * @brief Cause specific instance compilations
  *
