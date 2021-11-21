@@ -69,7 +69,7 @@ LBinaryTree<Key, Value>::LBinaryTree(int size, const Key keys[], const Value val
   {
     // need to uncomment this after implementing insert so that array
     // based constructor will now work
-    // insert(keys[idx], values[idx]);
+    insert(keys[idx], values[idx]);
   }
 }
 
@@ -187,6 +187,58 @@ void LBinaryTree<Key, Value>::clear(BinaryTreeNode<Key, Value>* node)
 
   // now we can free up this node safely
   delete node;
+}
+/** @brief insert (private)
+ * Private implementation of recursive tree insertion.  Recursively
+ * search binary tree to find location where new node should be created,
+ * then dynamically create the node and insert it.
+ *
+ * @param node The node we are currently processing/working on.  Can be
+ *   NULL, in which case we are at the location/point to create a new
+ *   node dynamically and return it for insertion in the tree.
+ * @param item The item to be inserted into the tree.
+ *
+ * @returns BinaryTreeNode<T>* Returns a pointer to a node.
+ */
+template<class Key, class Value>
+BinaryTreeNode<Key, Value>* LBinaryTree<Key, Value>::insert(BinaryTreeNode<Key, Value>* node, Key itemKey, Value itemValue)
+{
+  // base case, when node is null
+  if (node == NULL)
+  {
+    BinaryTreeNode<Key, Value>* newNode = new BinaryTreeNode<Key, Value>;
+    newNode->setKey(itemKey);
+    newNode->setValue(itemValue);
+    newNode->setLeft(NULL);
+    newNode->setRight(NULL);
+    this->size++;
+    return newNode;
+  }
+
+  // check the general cases here, determine if we
+  // should go left or right in the tree
+  if (itemKey <= node->getKey())
+  {
+    node->setLeft(insert(node->getLeft(), itemKey, itemValue));
+  }
+  // otherwise go right to insert
+  else
+  {
+    node->setRight(insert(node->getRight(), itemKey, itemValue));
+  }
+  // return this node
+  return node;
+}
+
+/**  @brief insert (public)
+ * The public interface of insertion into the binary search tree.
+ * We simply call the recursive private function to do the actual
+ * work of the insertion, starting with our current root node.
+ */
+template<class Key, class Value>
+void LBinaryTree<Key, Value>::insert(Key itemKey, Value itemValue)
+{
+  root = insert(root, itemKey, itemValue);
 }
 
 /**

@@ -44,137 +44,123 @@ TEST_CASE("LBinaryTreeNode<string, double> test tree construction <string,double
 
 /** Task 1: Test LBinaryTree insert member function
  */
-/*
-   TEST_CASE("LBinaryTreeNode<int, int> test insert member implementation",
-          "[task1]")
-   {
-   // initially tree is empty
-   LBinaryTree<int, int> tree;
-   CHECK( tree.getSize() == 0 );
-   CHECK( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 0 values: [ ]" );
+TEST_CASE("LBinaryTreeNode<int, int> test insert member implementation", "[task1]")
+{
+  // initially tree is empty
+  LBinaryTree<int, int> tree;
+  CHECK(tree.getSize() == 0);
+  CHECK(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 0 values: [ ]");
 
-   // first inserted becomes root
-   tree.insert(10, 10);
-   CHECK( tree.getSize() == 1 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 1 values: [ 10 ]" );
+  // first inserted becomes root
+  tree.insert(10, 10);
+  CHECK(tree.getSize() == 1);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 1 values: [ 10 ]");
 
-   // next node should be left child
-   tree.insert(5, 5);
-   CHECK( tree.getSize() == 2 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 2 values: [ 5 10 ]" );
+  // next node should be left child
+  tree.insert(5, 5);
+  CHECK(tree.getSize() == 2);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 2 values: [ 5 10 ]");
 
-   // fill up a few more nodes
-   tree.insert(15, 15);
-   tree.insert(3, 3);
-   tree.insert(1, 1);
-   tree.insert(12, 12);
-   tree.insert(11, 11);
-   tree.insert(18, 18);
-   CHECK( tree.getSize() == 8 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 8 values: [ 1 3 5 10 11 12 15 18 ]" );
+  // fill up a few more nodes
+  tree.insert(15, 15);
+  tree.insert(3, 3);
+  tree.insert(1, 1);
+  tree.insert(12, 12);
+  tree.insert(11, 11);
+  tree.insert(18, 18);
+  CHECK(tree.getSize() == 8);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1 3 5 10 11 12 15 18 ]");
 
-   // cleared tree should be empty again
-   tree.clear();
-   CHECK( tree.getSize() == 0 );
-   CHECK( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 0 values: [ ]" );
-   }
- */
+  // cleared tree should be empty again
+  tree.clear();
+  CHECK(tree.getSize() == 0);
+  CHECK(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 0 values: [ ]");
+}
 
 /** Task 1: Test LBinaryTree insert member function
  */
-/*
-   TEST_CASE("LBinaryTreeNode<string, double> test insert member implementation",
-          "[task1]")
-   {
-   // initially tree is empty
-   LBinaryTree<string, double> tree;
-   CHECK( tree.getSize() == 0 );
-   CHECK( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 0 values: [ ]" );
+TEST_CASE("LBinaryTreeNode<string, double> test insert member implementation", "[task1]")
+{
+  // initially tree is empty
+  LBinaryTree<string, double> tree;
+  CHECK(tree.getSize() == 0);
+  CHECK(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 0 values: [ ]");
 
-   // first inserted becomes root
-   string key = "juliet";
-   tree.insert(key, 10.10);
-   CHECK( tree.getSize() == 1 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 1 values: [ 10.1 ]" );
+  // first inserted becomes root
+  string key = "juliet";
+  tree.insert(key, 10.10);
+  CHECK(tree.getSize() == 1);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 1 values: [ 10.1 ]");
 
-   // next node should be left child
-   key = "echo";
-   tree.insert(key, 5.5);
-   CHECK( tree.getSize() == 2 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 2 values: [ 5.5 10.1 ]" );
+  // next node should be left child
+  key = "echo";
+  tree.insert(key, 5.5);
+  CHECK(tree.getSize() == 2);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 2 values: [ 5.5 10.1 ]");
 
-   // fill up a few more nodes
-   key = "oscar";
-   tree.insert(key, 15.15);
-   key = "charlie";
-   tree.insert(key, 3.3);
-   key = "alpha";
-   tree.insert(key, 1.1);
-   key = "lima";
-   tree.insert(key, 12.12);
-   key = "kilo";
-   tree.insert(key, 11.11);
-   key = "romeo";
-   tree.insert(key, 18.18);
-   CHECK( tree.getSize() == 8 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 8 values: [ 1.1 3.3 5.5 10.1 11.11 12.12 15.15 18.18 ]" );
+  // fill up a few more nodes
+  key = "oscar";
+  tree.insert(key, 15.15);
+  key = "charlie";
+  tree.insert(key, 3.3);
+  key = "alpha";
+  tree.insert(key, 1.1);
+  key = "lima";
+  tree.insert(key, 12.12);
+  key = "kilo";
+  tree.insert(key, 11.11);
+  key = "romeo";
+  tree.insert(key, 18.18);
+  CHECK(tree.getSize() == 8);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1.1 3.3 5.5 10.1 11.11 12.12 15.15 18.18 ]");
 
-   // cleared tree should be empty again
-   tree.clear();
-   CHECK( tree.getSize() == 0 );
-   CHECK( tree.isEmpty() );
-   CHECK( tree.str() == "<BinaryTree> size: 0 values: [ ]" );
-   }
- */
+  // cleared tree should be empty again
+  tree.clear();
+  CHECK(tree.getSize() == 0);
+  CHECK(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 0 values: [ ]");
+}
 
 /** Task 0: Test LBinaryTree construction and basic operations
  */
-/*
-   TEST_CASE("LBinaryTreeNode<int, int> test tree construction <int,int> using array based constructor",
-          "[task0]")
-   {
-   // test array based constructor, keys inserted in order from index 0 up to max,
-   // so 10 becomes the root of this tree
-   int keys[]   = {10, 5, 15, 12, 11, 3, 2, 1};
-   int values[] = {10, 5, 15, 12, 11, 3, 2, 1};
-   int size = 8;
-   LBinaryTree<int, int> tree(size, keys, values);
+TEST_CASE("LBinaryTreeNode<int, int> test tree construction <int,int> using array based constructor", "[task0]")
+{
+  // test array based constructor, keys inserted in order from index 0 up to max,
+  // so 10 becomes the root of this tree
+  int keys[] = {10, 5, 15, 12, 11, 3, 2, 1};
+  int values[] = {10, 5, 15, 12, 11, 3, 2, 1};
+  int size = 8;
+  LBinaryTree<int, int> tree(size, keys, values);
 
-   CHECK( tree.getSize() == 8 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1 2 3 5 10 11 12 15 ]" );
-
-   }
- */
+  CHECK(tree.getSize() == 8);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1 2 3 5 10 11 12 15 ]");
+}
 
 /** Task 0 Test LBinaryTree construction and basic operations
  */
-/*
-   TEST_CASE("LBinaryTreeNode<string, double> test tree construction <string,double> using array based constructor",
-          "[task0]")
-   {
-   // test array based constructor, keys inserted in order from index 0 up to max,
-   // so 10 becomes the root of this tree
-   string keys[]   = {"juliet", "echo", "oscar", "lima", "kilo", "charlie", "bravo", "alpha"};
-   double values[] = {10.10, 5.5, 15.15, 12.12, 11.11, 3.3, 2.2, 1.1};
-   int size = 8;
-   LBinaryTree<string, double> tree(size, keys, values);
+TEST_CASE("LBinaryTreeNode<string, double> test tree construction <string,double> using array based constructor", "[task0]")
+{
+  // test array based constructor, keys inserted in order from index 0 up to max,
+  // so 10 becomes the root of this tree
+  string keys[] = {"juliet", "echo", "oscar", "lima", "kilo", "charlie", "bravo", "alpha"};
+  double values[] = {10.10, 5.5, 15.15, 12.12, 11.11, 3.3, 2.2, 1.1};
+  int size = 8;
+  LBinaryTree<string, double> tree(size, keys, values);
 
-   CHECK( tree.getSize() == 8 );
-   CHECK_FALSE( tree.isEmpty() );
-   CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1.1 2.2 3.3 5.5 10.1 11.11 12.12 15.15 ]" );
-
-   }
- */
+  CHECK(tree.getSize() == 8);
+  CHECK_FALSE(tree.isEmpty());
+  CHECK(tree.str() == "<BinaryTree> size: 8 values: [ 1.1 2.2 3.3 5.5 10.1 11.11 12.12 15.15 ]");
+}
 
 /** Task 2: Test LBinaryTree find member function
  */
